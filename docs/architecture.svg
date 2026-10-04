@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 800" width="1260" height="800" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif">
+  <defs>
+    <marker id="a-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+    <marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ea580c"/></marker>
+    <style>
+      .t{font-size:15px;font-weight:700;fill:#0f172a}
+      .b{font-size:12px;fill:#334155}
+      .s{font-size:11px;fill:#64748b}
+      .lane{font-size:13px;font-weight:700;fill:#64748b}
+      .lbl{font-size:11px;fill:#475569}
+      .flow{stroke:#475569;stroke-width:1.8;fill:none;marker-end:url(#a-gray)}
+      .urgent{stroke:#dc2626;stroke-width:2.4;fill:none;marker-end:url(#a-red)}
+      .retry{stroke:#ea580c;stroke-width:1.8;fill:none;stroke-dasharray:6 4;marker-end:url(#a-orange)}
+    </style>
+  </defs>
+
+  <rect width="1260" height="800" fill="#ffffff"/>
+
+  <!-- タイトル -->
+  <text x="30" y="40" font-size="22" font-weight="700" fill="#0f172a">問い合わせ集約・通知システム 構成図（MVP）</text>
+  <text x="30" y="64" class="b">常時稼働サーバーなし（Webhook ＋ サーバーレス関数）／ 月700件（LINE 500・メール 200）／ 月額 約4,000円</text>
+
+  <!-- レーン見出し -->
+  <text x="115" y="100" class="lane" text-anchor="middle">① 入口</text>
+  <text x="350" y="100" class="lane" text-anchor="middle">② 受信（Vercel 関数）</text>
+  <text x="600" y="100" class="lane" text-anchor="middle">③ 保存（Supabase）</text>
+  <text x="850" y="100" class="lane" text-anchor="middle">④ 分類・振り分け</text>
+  <text x="1115" y="100" class="lane" text-anchor="middle">⑤ 通知先</text>
+  <line x1="30" y1="108" x2="1230" y2="108" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ① 入口 -->
+  <rect x="30" y="125" width="170" height="80" rx="10" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="115" y="155" class="t" text-anchor="middle">LINE 公式アカウント</text>
+  <text x="115" y="176" class="b" text-anchor="middle">お客様から 月500件</text>
+  <text x="115" y="194" class="s" text-anchor="middle">取りこぼし最多（夜間）</text>
+
+  <rect x="30" y="285" width="170" height="65" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="115" y="314" class="t" text-anchor="middle">Gmail</text>
+  <text x="115" y="335" class="b" text-anchor="middle">お客様から 月200件</text>
+
+  <rect x="30" y="390" width="170" height="70" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="115" y="417" class="t" text-anchor="middle">GAS</text>
+  <text x="115" y="437" class="b" text-anchor="middle">1分ごとに新着を確認</text>
+  <text x="115" y="453" class="s" text-anchor="middle">時間主導型トリガー</text>
+
+  <!-- ② 受信 -->
+  <rect x="240" y="125" width="220" height="80" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5"/>
+  <text x="350" y="150" class="t" text-anchor="middle">/api/line/webhook</text>
+  <text x="256" y="172" class="b">・LINE署名を検証</text>
+  <text x="256" y="191" class="b">・DBに保存して即 200 応答</text>
+
+  <rect x="240" y="385" width="220" height="80" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5"/>
+  <text x="350" y="410" class="t" text-anchor="middle">/api/mail/ingest</text>
+  <text x="256" y="432" class="b">・共有キーで認証</text>
+  <text x="256" y="451" class="b">・DBに保存して即 200 応答</text>
+
+  <!-- ③ 保存 -->
+  <rect x="500" y="215" width="200" height="145" rx="10" fill="#f0fdf4" stroke="#15803d" stroke-width="1.5"/>
+  <text x="600" y="240" class="t" text-anchor="middle">inquiries テーブル</text>
+  <text x="514" y="263" class="b">・本文 / チャネル / 受信時刻</text>
+  <text x="514" y="282" class="b">・状態：受信 → 分類済</text>
+  <text x="514" y="299" class="b">　　　 → 投稿済 / 失敗</text>
+  <text x="514" y="318" class="b">・重複防止キー</text>
+  <text x="514" y="335" class="s">　LINEイベントID / Gmail ID</text>
+  <text x="514" y="351" class="s">　（再送・二重取得を弾く）</text>
+
+  <rect x="500" y="400" width="200" height="100" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="600" y="424" class="t" text-anchor="middle">pg_cron（1分ごと）</text>
+  <text x="514" y="446" class="b">・未処理・失敗分を再処理</text>
+  <text x="514" y="465" class="b">・3回失敗 → 「未分類」で</text>
+  <text x="514" y="482" class="b">　Slack投稿 ＋ 部長に通知</text>
+  <text x="514" y="496" class="s">　（問い合わせを捨てない）</text>
+
+  <!-- ④ 分類・振り分け -->
+  <rect x="740" y="215" width="220" height="130" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5"/>
+  <text x="850" y="240" class="t" text-anchor="middle">振り分け処理（Vercel）</text>
+  <text x="756" y="263" class="b">1. Claude で分類</text>
+  <text x="756" y="282" class="b">2. カテゴリ別に Slack 投稿</text>
+  <text x="756" y="301" class="b">3. クレームなら LINE Push</text>
+  <text x="756" y="320" class="b">4. DBの状態を更新</text>
+  <text x="756" y="337" class="s">受信直後に after() で実行</text>
+
+  <rect x="740" y="385" width="220" height="115" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="850" y="409" class="t" text-anchor="middle">Claude API</text>
+  <text x="756" y="431" class="b">tool_choice で構造化出力</text>
+  <text x="756" y="450" class="b">・カテゴリ（4種＋その他）</text>
+  <text x="756" y="469" class="b">・緊急 true / false・確信度</text>
+  <text x="756" y="489" class="s">迷ったら「緊急」側に倒す</text>
+
+  <!-- ⑤ 通知先 -->
+  <rect x="1000" y="125" width="230" height="230" rx="10" fill="#fdf4ff" stroke="#a21caf" stroke-width="1.5"/>
+  <text x="1115" y="150" class="t" text-anchor="middle">Slack（Pro・既存）</text>
+  <g class="b">
+    <rect x="1015" y="165" width="200" height="28" rx="5" fill="#ffffff" stroke="#e9d5ff"/>
+    <text x="1025" y="184">#問合せ-賃貸</text><text x="1205" y="184" text-anchor="end" class="s">50%</text>
+    <rect x="1015" y="199" width="200" height="28" rx="5" fill="#ffffff" stroke="#e9d5ff"/>
+    <text x="1025" y="218">#問合せ-売買</text><text x="1205" y="218" text-anchor="end" class="s">20%</text>
+    <rect x="1015" y="233" width="200" height="28" rx="5" fill="#ffffff" stroke="#e9d5ff"/>
+    <text x="1025" y="252">#問合せ-内見</text><text x="1205" y="252" text-anchor="end" class="s">20%</text>
+    <rect x="1015" y="267" width="200" height="28" rx="5" fill="#fef2f2" stroke="#fca5a5"/>
+    <text x="1025" y="286" fill="#b91c1c">#問合せ-クレーム</text><text x="1205" y="286" text-anchor="end" class="s">10%</text>
+    <rect x="1015" y="301" width="200" height="28" rx="5" fill="#ffffff" stroke="#e9d5ff"/>
+    <text x="1025" y="320">#問合せ-その他・未分類</text>
+  </g>
+  <text x="1115" y="346" class="s" text-anchor="middle">返信はこれまで通り各チャネルで行う</text>
+
+  <rect x="1000" y="400" width="230" height="100" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="1115" y="425" class="t" text-anchor="middle" fill="#b91c1c">営業部長の個人 LINE</text>
+  <text x="1016" y="447" class="b">LINE Push API（クレーム時）</text>
+  <text x="1016" y="466" class="b">月 約70通・無料枠内の見込み</text>
+  <text x="1016" y="487" font-size="13" font-weight="700" fill="#dc2626">受信から 5分以内</text>
+
+  <!-- 矢印：入口 → 受信 -->
+  <path class="flow" d="M200,165 L238,165"/>
+  <path class="flow" d="M115,350 L115,388"/>
+  <path class="flow" d="M200,425 L238,425"/>
+  <text x="219" y="417" class="lbl" text-anchor="middle">POST</text>
+
+  <!-- 受信 → 保存 -->
+  <path class="flow" d="M460,165 L480,165 L480,255 L498,255"/>
+  <path class="flow" d="M460,425 L480,425 L480,320 L498,320"/>
+  <text x="600" y="205" class="lbl" text-anchor="middle">まず保存（消さない）</text>
+
+  <!-- 保存 → 処理 -->
+  <path class="flow" d="M700,280 L738,280"/>
+  <text x="719" y="272" class="lbl" text-anchor="middle">処理</text>
+
+  <!-- pg_cron ↔ DB, pg_cron → 処理 -->
+  <path class="retry" d="M600,400 L600,362"/>
+  <path class="retry" d="M700,450 L720,450 L720,315 L738,315"/>
+  <text x="660" y="386" class="lbl" fill="#c2410c" text-anchor="middle">再実行</text>
+
+  <!-- 処理 ↔ Claude -->
+  <path class="flow" d="M830,345 L830,383"/>
+  <path class="flow" d="M870,385 L870,347"/>
+
+  <!-- 処理 → 通知先 -->
+  <path class="flow" d="M960,240 L998,240"/>
+  <text x="979" y="232" class="lbl" text-anchor="middle">Slack API</text>
+  <path class="urgent" d="M960,300 L980,300 L980,450 L998,450"/>
+  <text x="984" y="380" font-size="11" font-weight="700" fill="#dc2626" transform="rotate(90 984 380)" text-anchor="middle">クレームのみ</text>
+
+  <!-- 下段：開発時 / Phase2 -->
+  <rect x="30" y="545" width="370" height="140" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="46" y="572" class="t">開発時の検証（Headless モード）</text>
+  <text x="46" y="597" class="b">claude -p でサンプル22件を一括分類し、</text>
+  <text x="46" y="616" class="b">合格基準と照合する</text>
+  <text x="46" y="641" class="b">・緊急判定 3/3（#19・#20・#22）</text>
+  <text x="46" y="660" class="b">・カテゴリ分類 20/22 以上</text>
+  <text x="46" y="677" class="s">本番のリアルタイム分類には使わない（Claude API を使う）</text>
+
+  <rect x="430" y="545" width="800" height="140" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="446" y="572" class="t" fill="#64748b">Phase2（今回は作らない・点線）</text>
+  <g>
+    <rect x="446" y="587" width="184" height="84" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+    <text x="458" y="609" class="b" font-weight="700">1. 未対応リマインド</text>
+    <text x="458" y="627" class="b" font-weight="700">　＋SLAレポート</text>
+    <text x="458" y="647" class="s">✅が付くまでの時間を記録</text>
+    <text x="458" y="663" class="s">Headless で定期実行</text>
+
+    <rect x="642" y="587" width="184" height="84" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+    <text x="654" y="609" class="b" font-weight="700">2. 営業担当の</text>
+    <text x="654" y="627" class="b" font-weight="700">　自動アサイン</text>
+    <text x="654" y="647" class="s">担当未定の放置を防ぐ</text>
+
+    <rect x="838" y="587" width="184" height="84" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+    <text x="850" y="609" class="b" font-weight="700">3. 夜間LINEへの</text>
+    <text x="850" y="627" class="b" font-weight="700">　自動一次返信</text>
+    <text x="850" y="647" class="s">「受け付けました」</text>
+
+    <rect x="1034" y="587" width="184" height="84" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+    <text x="1046" y="609" class="b" font-weight="700">4. 電話（月50件）</text>
+    <text x="1046" y="629" class="s">a. Slackにメモ → AI分類</text>
+    <text x="1046" y="647" class="s">b. Twilio 音声→テキスト</text>
+    <text x="1046" y="663" class="s">　（aで足りなければ）</text>
+  </g>
+
+  <!-- 月額 -->
+  <rect x="30" y="705" width="1200" height="40" rx="8" fill="#f1f5f9"/>
+  <text x="46" y="730" class="b"><tspan font-weight="700">月額の見込み：</tspan>Vercel Pro 約3,000円 ／ Supabase 無料枠 ／ Claude API 数百円 ／ LINE 無料枠 ／ Slack 既存 → <tspan font-weight="700">合計 約4,000円</tspan>（予算 1〜2万円）</text>
+
+  <!-- 凡例 -->
+  <g transform="translate(30,770)">
+    <line x1="0" y1="0" x2="36" y2="0" class="flow"/>
+    <text x="44" y="4" class="lbl">通常の流れ</text>
+    <line x1="130" y1="0" x2="166" y2="0" class="urgent"/>
+    <text x="174" y="4" class="lbl">緊急通知（クレーム）</text>
+    <line x1="300" y1="0" x2="336" y2="0" class="retry"/>
+    <text x="344" y="4" class="lbl">再処理（取りこぼし防止）</text>
+    <text x="1200" y="4" class="s" text-anchor="end">料金は提案書作成前に最新情報を確認</text>
+  </g>
+</svg>

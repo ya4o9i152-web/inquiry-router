@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1090" width="900" height="1090" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif">
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <style>
+      .h{font-size:18px;font-weight:700;fill:#0f172a}
+      .t{font-size:16px;font-weight:700;fill:#0f172a}
+      .b{font-size:14px;fill:#334155}
+      .s{font-size:12px;fill:#64748b}
+      .arrow{stroke:#64748b;stroke-width:3;fill:none;marker-end:url(#g)}
+      .red{stroke:#dc2626;stroke-width:3.5;fill:none;marker-end:url(#r)}
+    </style>
+  </defs>
+  <rect width="900" height="1090" fill="#ffffff"/>
+
+  <!-- タイトル -->
+  <text x="450" y="44" font-size="24" font-weight="700" fill="#0f172a" text-anchor="middle">お問い合わせ 自動仕分けのしくみ</text>
+  <text x="450" y="74" class="b" text-anchor="middle">メールと LINE のお問い合わせを、AI が自動で仕分けて Slack に届けます</text>
+
+  <!-- 入口 -->
+  <rect x="60" y="105" width="220" height="85" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="170" y="140" class="h" text-anchor="middle">📧 メール</text>
+  <text x="170" y="167" class="b" text-anchor="middle">月 約200件</text>
+
+  <rect x="340" y="105" width="220" height="85" rx="14" fill="#ecfdf5" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="140" class="h" text-anchor="middle">💬 LINE</text>
+  <text x="450" y="167" class="b" text-anchor="middle">月 約500件</text>
+
+  <rect x="620" y="105" width="220" height="85" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="730" y="140" class="h" text-anchor="middle" fill="#94a3b8">☎️ 電話</text>
+  <text x="730" y="167" class="s" text-anchor="middle">次の段階で対応予定</text>
+
+  <path d="M170,190 L170,212 L450,212" stroke="#64748b" stroke-width="3" fill="none"/>
+  <path class="arrow" d="M450,190 L450,236"/>
+
+  <!-- ① 受け取る -->
+  <rect x="150" y="242" width="600" height="92" rx="14" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+  <text x="176" y="275" class="t">① 自動で受け取って、記録する</text>
+  <text x="176" y="302" class="b">24時間・夜間や休日も、届いたお問い合わせをすぐに受け取り、</text>
+  <text x="176" y="322" class="b">まず記録します。営業時間外の LINE も見落としません。</text>
+
+  <path class="arrow" d="M450,334 L450,366"/>
+
+  <!-- ② AI仕分け -->
+  <rect x="150" y="372" width="600" height="160" rx="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="176" y="405" class="t">② AI が内容を読んで、仕分ける</text>
+  <g font-size="14" font-weight="700" text-anchor="middle">
+    <rect x="176" y="422" width="100" height="36" rx="18" fill="#ffffff" stroke="#c4b5fd"/><text x="226" y="445" fill="#334155">賃貸</text>
+    <rect x="288" y="422" width="100" height="36" rx="18" fill="#ffffff" stroke="#c4b5fd"/><text x="338" y="445" fill="#334155">売買</text>
+    <rect x="400" y="422" width="100" height="36" rx="18" fill="#ffffff" stroke="#c4b5fd"/><text x="450" y="445" fill="#334155">内見</text>
+    <rect x="512" y="422" width="100" height="36" rx="18" fill="#fef2f2" stroke="#f87171"/><text x="562" y="445" fill="#b91c1c">クレーム</text>
+    <rect x="624" y="422" width="100" height="36" rx="18" fill="#ffffff" stroke="#c4b5fd"/><text x="674" y="445" fill="#334155">その他</text>
+  </g>
+  <text x="176" y="490" class="b">キーワードではなく文章の意味で判断します。</text>
+  <text x="176" y="511" class="s">例：「これは緊急ではありません」と書かれていても、「緊急」の文字に反応して誤って通知しません。</text>
+
+  <!-- 分岐 -->
+  <path class="arrow" d="M270,532 L270,578"/>
+  <path class="red" d="M680,532 L680,578"/>
+  <text x="692" y="561" font-size="13" font-weight="700" fill="#dc2626">クレームのとき</text>
+
+  <!-- ③ Slack -->
+  <rect x="60" y="584" width="430" height="210" rx="14" fill="#fdf4ff" stroke="#a21caf" stroke-width="2"/>
+  <text x="84" y="616" class="t">③ Slack の専用チャンネルに届く</text>
+  <g class="b">
+    <rect x="84" y="630" width="382" height="26" rx="6" fill="#ffffff" stroke="#e9d5ff"/><text x="96" y="648">#問合せ-賃貸</text><text x="454" y="648" class="s" text-anchor="end">全体の約50%</text>
+    <rect x="84" y="660" width="382" height="26" rx="6" fill="#ffffff" stroke="#e9d5ff"/><text x="96" y="678">#問合せ-売買</text><text x="454" y="678" class="s" text-anchor="end">約20%</text>
+    <rect x="84" y="690" width="382" height="26" rx="6" fill="#ffffff" stroke="#e9d5ff"/><text x="96" y="708">#問合せ-内見</text><text x="454" y="708" class="s" text-anchor="end">約20%</text>
+    <rect x="84" y="720" width="382" height="26" rx="6" fill="#fef2f2" stroke="#fca5a5"/><text x="96" y="738" fill="#b91c1c">#問合せ-クレーム</text><text x="454" y="738" class="s" text-anchor="end">約10%</text>
+    <rect x="84" y="750" width="382" height="26" rx="6" fill="#ffffff" stroke="#e9d5ff"/><text x="96" y="768">#問合せ-その他</text>
+  </g>
+
+  <!-- ④ 部長LINE -->
+  <rect x="520" y="584" width="320" height="210" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="544" y="616" class="t" fill="#b91c1c">④ 部長のスマホにお知らせ</text>
+  <text x="544" y="645" class="b">クレームを見つけたら、</text>
+  <text x="544" y="665" class="b">部長の個人 LINE に直接届きます。</text>
+  <text x="680" y="722" font-size="34" font-weight="800" fill="#dc2626" text-anchor="middle">5分以内</text>
+  <text x="680" y="748" class="s" text-anchor="middle">お問い合わせが届いてから</text>
+  <text x="680" y="775" class="s" text-anchor="middle">夜間に届いたクレームも見逃しません</text>
+
+  <!-- 安心ポイント -->
+  <rect x="60" y="818" width="780" height="100" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="84" y="850" class="t">🛡️ お問い合わせが消えないしくみ</text>
+  <text x="84" y="876" class="b">AI などが一時的に止まっても、1分ごとに見回ってやり直します。</text>
+  <text x="84" y="898" class="b">それでも仕分けできないものは「その他」に届け、念のため部長にもお知らせします。</text>
+
+  <!-- スタッフの作業 -->
+  <rect x="60" y="936" width="380" height="88" rx="14" fill="#f1f5f9"/>
+  <text x="84" y="966" class="t">👤 スタッフの皆さまの作業</text>
+  <text x="84" y="992" class="b">Slack を見て対応します。お客様への返信は</text>
+  <text x="84" y="1012" class="b">これまで通り、メール・LINE から行います。</text>
+
+  <rect x="460" y="936" width="380" height="88" rx="14" fill="#f1f5f9"/>
+  <text x="484" y="966" class="t">💰 月々の費用　約4,000円</text>
+  <text x="484" y="992" class="b">サーバー代 約3,000円 ＋ AI 利用料 数百円</text>
+  <text x="484" y="1012" class="s">Slack・LINE は今のご契約のままで使えます</text>
+
+  <!-- 補足 -->
+  <text x="450" y="1060" class="s" text-anchor="middle">ご参考（使用サービス）：Vercel（受付プログラム）／ Supabase（記録）／ Claude（AI）／ Google Apps Script（メールの確認）</text>
+</svg>
