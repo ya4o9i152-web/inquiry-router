@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!.env.example
+
+# 秘密鍵を埋め込んだSQL
+*.local.sql
+
+# Headlessモードの検証・運用チェックの出力（実行のたびに生成）
+reports/
