@@ -32,6 +32,7 @@ Next.js 16（App Router, Route Handlers, `after()`）／Vercel／Supabase（Post
 | [スコープ.md](./スコープ.md) | MVP / Phase2 の切り分けと5日間の計画・合格基準 |
 | [リスク一覧.md](./リスク一覧.md) | 技術・ビジネス・運用のリスクと、実装した対策・検証結果 |
 | [docs/architecture.png](./docs/architecture.png) | 構成図（技術版） |
+| [引き継ぎ資料.md](./引き継ぎ資料.md)（[PDF](./引き継ぎ資料.pdf)） | クライアント（営業部長・スタッフ）向け、A4・1枚の引き継ぎ資料 |
 | [docs/運用マニュアル.md](./docs/運用マニュアル.md) | スタッフ向け：Slack の見方、未分類が届いたときの対応 |
 | [docs/開発者向け引き継ぎ.md](./docs/開発者向け引き継ぎ.md) | 構成・設計上の約束ごと・監視ビュー・よくある作業 |
 | [docs/APIキー再発行・障害対応手順書.md](./docs/APIキー再発行・障害対応手順書.md) | 全キーの再発行手順、症状別の障害対応、手動での再処理 |
