@@ -33,7 +33,10 @@ Next.js 16（App Router, Route Handlers, `after()`）／Vercel／Supabase（Post
 | [リスク一覧.md](./リスク一覧.md) | 技術・ビジネス・運用のリスクと、実装した対策・検証結果 |
 | [docs/architecture.png](./docs/architecture.png) | 構成図（技術版） |
 | [docs/運用マニュアル.md](./docs/運用マニュアル.md) | スタッフ向け：Slack の見方、未分類が届いたときの対応 |
-| [docs/開発者向け引き継ぎ.md](./docs/開発者向け引き継ぎ.md) | 構成・設計上の約束ごと・トークンの更新・障害時の切り分け |
+| [docs/開発者向け引き継ぎ.md](./docs/開発者向け引き継ぎ.md) | 構成・設計上の約束ごと・監視ビュー・よくある作業 |
+| [docs/APIキー再発行・障害対応手順書.md](./docs/APIキー再発行・障害対応手順書.md) | 全キーの再発行手順、症状別の障害対応、手動での再処理 |
+| [docs/受け入れテスト結果.md](./docs/受け入れテスト結果.md) | 5カテゴリのチャンネル振り分けと、クレーム10件の緊急通知SLA（10/10） |
+| [納品チェックリスト.md](./納品チェックリスト.md) | 納品物チェックリスト8項目と、それぞれの根拠 |
 | [docs/アカウント準備手順.md](./docs/アカウント準備手順.md) / [docs/フェーズ2_設定手順.md](./docs/フェーズ2_設定手順.md) | LINE・Slack・Supabase・GAS の初期設定 |
 
 ## システム構成
@@ -55,6 +58,7 @@ Gmail ─GAS(1分)─→ /api/mail/ingest ──┤
 4. `npm run check:connections` で全サービスへの接続を確認する
 5. Vercel にデプロイし、[docs/フェーズ2_設定手順.md](./docs/フェーズ2_設定手順.md) に沿って LINE の Webhook URL と GAS を設定する
 6. `supabase/cron.sql` の `__CRON_SECRET__` を置き換えて SQL Editor で実行する（毎分のキュー処理）
+7. `supabase/dashboard.sql` を SQL Editor で実行する（監視ビュー）
 
 ## テスト・動作確認
 
@@ -67,3 +71,4 @@ Gmail ─GAS(1分)─→ /api/mail/ingest ──┤
 | `npm run test:urgent [URL]` | 同時確保の排他、緊急ルートの即時処理と SLA、通常ルートとの分離（5項目） |
 | `npm run check:cron` | pg_cron による自動処理 |
 | `npm run ops:check` | Headless モードによる運用チェック |
+| `npm run test:acceptance` | 受け入れテスト（5カテゴリの振り分け＋クレーム10件のSLA） |

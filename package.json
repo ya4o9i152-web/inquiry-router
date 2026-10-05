@@ -15,7 +15,8 @@
     "test:urgent": "tsx scripts/test-urgent.ts",
     "show:sla": "tsx scripts/show-sla.ts",
     "ops:report": "tsx scripts/ops-report.ts",
-    "ops:check": "bash scripts/headless-ops-check.sh"
+    "ops:check": "bash scripts/headless-ops-check.sh",
+    "test:acceptance": "tsx scripts/acceptance-test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
